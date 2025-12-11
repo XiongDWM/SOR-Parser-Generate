@@ -31,7 +31,7 @@ public class MapBlock {
             buffer.putLong(size); 
 
             byte[] result = new byte[buffer.position()];
-            buffer.flip();
+            ((java.nio.Buffer) buffer).flip();
             buffer.get(result);
             return result;
         }
@@ -42,7 +42,7 @@ public class MapBlock {
         }
         
     }
-    private String mbId="Map\\0";
+    private String mbId="Map";
     private int mrn=0; // unsigned short
     private long mbs=0L; 
     private short nb=5; // number of block meta info, default 5
@@ -94,6 +94,7 @@ public class MapBlock {
         byte[] mbIdBytes = mbId.getBytes();
         buffer.put((byte)mbIdBytes.length);
         buffer.put(mbIdBytes);
+        buffer.put((byte)0);
 
         buffer.put(UnsignedConvert.intToUnsignedShortBytes(mrn));
 
@@ -105,7 +106,7 @@ public class MapBlock {
 
         byte[] result = new byte[buffer.position()];
         
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }

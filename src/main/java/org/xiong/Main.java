@@ -1,5 +1,7 @@
 package org.xiong;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.xiong.sor.GenBlockMethods;
@@ -14,7 +16,7 @@ import org.xiong.sor.blocks.SupplierParametersBlock;
 public class Main {
 
     public static void main(String[] args) {
-        GenBlockMethods<SorSample> genBlockMethods = new GenBlockMethods<>() {
+        GenBlockMethods<SorSample> genBlockMethods = new GenBlockMethods<SorSample>() {
             @Override
             public SorFullProtocol convertSorProtocol(SorSample origin) {
                 SorFullProtocol sorFullProtocol = new SorFullProtocol();
@@ -29,16 +31,15 @@ public class Main {
                 ptsBlock.setSf(origin.getCurve());
                 
 
-                SorFullProtocol sor = new SorFullProtocol();
                 sorFullProtocol.setMapBlock(mapBlock);
-                sor.setGpBlock(generalParametersBlock);
-                sor.setKeBlock(keyEventsBlock);
-                sor.setSpBlock(supplierParametersBlock);
-                sor.setPtsBlock(ptsBlock);
+                sorFullProtocol.setGpBlock(generalParametersBlock);
+                sorFullProtocol.setKeBlock(keyEventsBlock);
+                sorFullProtocol.setSpBlock(supplierParametersBlock);
+                sorFullProtocol.setPtsBlock(ptsBlock);
                 
                 // convert data to blocks
 
-                return sor;
+                return sorFullProtocol;
             }
         };
         SorSample sample = new SorSample(new int[]{1, 2, 3}, "Sample Event");
@@ -47,6 +48,17 @@ public class Main {
         byte[] protocolBytes = GenBlockMethods.getProtocolBytes(protocol);
         System.out.println("bytes length: " + protocolBytes.length);
         System.out.println("bytes: " + Arrays.toString(protocolBytes));
+
+        // 写入 .sor 文件
+        String timeMillisString= String.valueOf(System.currentTimeMillis());
+        String outputFileName = "output_" + timeMillisString + ".sor";
+        try (FileOutputStream fos = new FileOutputStream(outputFileName)) {
+            fos.write(protocolBytes);
+            System.out.println("Successfully wrote " + protocolBytes.length + " bytes to " + outputFileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+            e.printStackTrace();
+        }
 
     }  
     

@@ -68,33 +68,34 @@ public class SorFullProtocol {
         List<MapBlock.BlockMeta> metaInfo = new LinkedList<>();
         if(gpBlock != null) {
             totalSize += gpBlock.toBytes().length;
-            metaInfo.addLast(new MapBlock.BlockMeta(gpBlock.getPdId(), 0,gpBlock.toBytes().length));
+            metaInfo.add(new MapBlock.BlockMeta(gpBlock.getPdId(), 0,gpBlock.toBytes().length));
 
         }
         if(spBlock != null) {
             totalSize += spBlock.toBytes().length;
-            metaInfo.addLast(new MapBlock.BlockMeta(spBlock.getMfId(), 0, spBlock.toBytes().length));
+            metaInfo.add(new MapBlock.BlockMeta(spBlock.getMfId(), 0, spBlock.toBytes().length));
 
         }
         if(fpBlock != null) {
             totalSize += fpBlock.toBytes().length;
-            metaInfo.addLast(new MapBlock.BlockMeta(fpBlock.getFpid(), 0, fpBlock.toBytes().length));
+            metaInfo.add(new MapBlock.BlockMeta(fpBlock.getFpid(), 0, fpBlock.toBytes().length));
 
         }
         if(keBlock != null) {
             totalSize += keBlock.toBytes().length;
-            metaInfo.addLast(new MapBlock.BlockMeta(keBlock.getKeId(), 0, keBlock.toBytes().length));
+            metaInfo.add(new MapBlock.BlockMeta(keBlock.getKeId(), 0, keBlock.toBytes().length));
   
         }
 
         if(ptsBlock != null) {
             totalSize += ptsBlock.toBytes().length;
-            metaInfo.addLast(new MapBlock.BlockMeta(ptsBlock.getDpid(), 0, ptsBlock.toBytes().length));
+            metaInfo.add(new MapBlock.BlockMeta(ptsBlock.getDpid(), 0, ptsBlock.toBytes().length));
         }
 
         if (mapBlock != null) {
             mapBlock.setMetaInfo(metaInfo.toArray(new MapBlock.BlockMeta[0]));
             mapBlock.setNb((short)(metaInfo.size()+1));
+            totalSize += mapBlock.toBytes().length;
         }
 
         byte[] result = new byte[totalSize];

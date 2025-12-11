@@ -4,14 +4,14 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public class SupplierParametersBlock {
-    private String spId="SupParams\\0";
-    private String sn="\\0";
-    private String mfId="\\0";
-    private String otdr="\\0";
-    private String omId="\\0";
-    private String omsn="\\0";
-    private String sr="\\0";
-    private String ot="\\0";
+    private String spId="SupParams";
+    private String sn="";
+    private String mfId="";
+    private String otdr="";
+    private String omId="";
+    private String omsn="";
+    private String sr="";
+    private String ot="";
 
     public String getSpId() {
         return spId;
@@ -82,29 +82,37 @@ public class SupplierParametersBlock {
         byte[] spIdBytes = spId.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)spIdBytes.length);
         buffer.put(spIdBytes);
+        buffer.put((byte)0);
         byte[] snBytes = sn.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)snBytes.length);
-        buffer.put(snBytes);    
+        buffer.put(snBytes);
+        buffer.put((byte)0);
         byte[] mfIdBytes = mfId.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)mfIdBytes.length);
         buffer.put(mfIdBytes);
+        buffer.put((byte)0);
         byte[] otdrBytes = otdr.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)otdrBytes.length);
         buffer.put(otdrBytes);
+        buffer.put((byte)0);
         byte[] omIdBytes = omId.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)omIdBytes.length);
         buffer.put(omIdBytes);
+        buffer.put((byte)0);
         byte[] omsnBytes = omsn.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)omsnBytes.length);
         buffer.put(omsnBytes);
+        buffer.put((byte)0);
         byte[] srBytes = sr.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)srBytes.length);
         buffer.put(srBytes);
+        buffer.put((byte)0);
         byte[] otBytes = ot.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)otBytes.length); 
         buffer.put(otBytes);
+        buffer.put((byte)0);
         byte[] result = new byte[buffer.position()];
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }

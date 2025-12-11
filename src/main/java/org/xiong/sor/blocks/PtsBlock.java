@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import org.xiong.sor.UnsignedConvert;
 
 public class PtsBlock {
-    private String dpid="DataPts\\0";
+    private String dpid="DataPts";
     private long tndp; // 点数
     private short tsf=1;
     private int[] sf; // 序列化的时候需要转为无符号short
@@ -49,6 +49,7 @@ public class PtsBlock {
         byte[] dpidBytes = dpid.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)dpidBytes.length);
         buffer.put(dpidBytes);
+        buffer.put((byte)0);
         buffer.putLong(tndp);
         buffer.putShort(tsf);
         if (sf != null) {
@@ -60,7 +61,7 @@ public class PtsBlock {
             buffer.put((byte)0);
         }
         byte[] result = new byte[buffer.position()];
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }

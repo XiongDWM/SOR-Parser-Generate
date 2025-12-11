@@ -5,20 +5,20 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
 public class GeneralParametersBlock {
-    private String pdId="GenParams\\0";
+    private String pdId="GenParams";
     private String lc="CH"; // language code default chinese
-    private String cid="\\0"; // cable id, default none
-    private String fid="\\0"; // fiber id. defult none
+    private String cid=""; // cable id, default none
+    private String fid=""; // fiber id. defult none
     private short ft=652; // fiber type, 652=conventional smf
     private short nw=1310; // nominal wavelength
-    private String ol="\\0";
-    private String tl="\\0";
-    private String ccd="\\0";
+    private String ol="";
+    private String tl="";
+    private String ccd="";
     private String cdf="RC"; // current data flag, three conditions: [NC,RC,OT]
     private long uo=0L; // user offset
     private long uod= 0L; // user offset distance
-    private String op="\\0"; // operator
-    private String cmt="\\0"; // comment
+    private String op=""; // operator
+    private String cmt=""; // comment
 
     public String getPdId() {
         return pdId;
@@ -139,6 +139,7 @@ public class GeneralParametersBlock {
         byte[] pdIdBytes = pdId.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)pdIdBytes.length);
         buffer.put(pdIdBytes);
+        buffer.put((byte)0);
 
         byte[] lcBytes = lc.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)lcBytes.length);
@@ -147,10 +148,12 @@ public class GeneralParametersBlock {
         byte[] cidBytes = cid.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)cidBytes.length);
         buffer.put(cidBytes);
+        buffer.put((byte)0);
 
         byte[] fidBytes = fid.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)fidBytes.length);
         buffer.put(fidBytes);
+        buffer.put((byte)0);
 
         buffer.putShort(ft);
         buffer.putShort(nw);
@@ -158,14 +161,17 @@ public class GeneralParametersBlock {
         byte[] olBytes = ol.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)olBytes.length);
         buffer.put(olBytes);
+        buffer.put((byte)0);
 
         byte[] tlBytes = tl.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)tlBytes.length);
         buffer.put(tlBytes);
+        buffer.put((byte)0);
 
         byte[] ccdBytes = ccd.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)ccdBytes.length);
         buffer.put(ccdBytes);
+        buffer.put((byte)0);
 
         byte[] cdfBytes = cdf.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)cdfBytes.length);
@@ -177,13 +183,15 @@ public class GeneralParametersBlock {
         byte[] opBytes = op.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)opBytes.length);
         buffer.put(opBytes);
+        buffer.put((byte)0);
 
         byte[] cmtBytes = cmt.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)cmtBytes.length);
         buffer.put(cmtBytes);
+        buffer.put((byte)0);
 
         byte[] result = new byte[buffer.position()];
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }

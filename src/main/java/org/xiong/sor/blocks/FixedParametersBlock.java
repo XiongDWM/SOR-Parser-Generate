@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import org.xiong.sor.UnsignedConvert;
 
 public class FixedParametersBlock {
-    private String fpid="\\0";
+    private String fpid="";
     private BigInteger dts=new BigInteger(Long.toUnsignedString(System.currentTimeMillis())); // current time
     private String ud="mt"; // units of distance default meter
     private short aw= 1310; // actual wavelength
@@ -232,6 +232,7 @@ public class FixedParametersBlock {
         byte[] fpidBytes = fpid.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)fpidBytes.length);
         buffer.put(fpidBytes);
+        buffer.put((byte)0);
 
         byte[] dtsBytes = UnsignedConvert.BigIntToUnsignedLongBytes(dts);
         buffer.put(dtsBytes);
@@ -270,7 +271,7 @@ public class FixedParametersBlock {
 
         // 截取实际长度
         byte[] result = new byte[buffer.position()];
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }

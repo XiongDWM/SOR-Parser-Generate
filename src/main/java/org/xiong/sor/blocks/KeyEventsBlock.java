@@ -16,7 +16,7 @@ public class KeyEventsBlock {
         String ec; // event code 6 bytes
         String lmt; // loss measurement technique 2 bytes
         long[] ml=new long[5]; // marker locations size=5
-        String cmt="\\0"; // comment
+        String cmt=""; // comment
 
         
         public byte[] toBytes() {
@@ -49,13 +49,14 @@ public class KeyEventsBlock {
             // ml: 5个long
             for (long m : ml) buffer.putLong(m);
 
-            // cmt: 长度+内容
+            // cmt: 长度+内容+null terminator
             byte[] cmtBytes = cmt.getBytes(StandardCharsets.UTF_8);
             buffer.put((byte)cmtBytes.length);
             buffer.put(cmtBytes);
+            buffer.put((byte)0);
 
             byte[] result = new byte[buffer.position()];
-            buffer.flip();
+            ((java.nio.Buffer) buffer).flip();
             buffer.get(result);
             return result;
         }
@@ -106,7 +107,7 @@ public class KeyEventsBlock {
         }
 
     }
-    private String keId="KeyEvents\\0";
+    private String keId="KeyEvents";
     private short tnke;
     private List<Event> events;
     private long eel=0; // end-to-end loss
@@ -159,6 +160,7 @@ public class KeyEventsBlock {
         byte[] keIdBytes = keId.getBytes(StandardCharsets.UTF_8);
         buffer.put((byte)keIdBytes.length);
         buffer.put(keIdBytes);
+        buffer.put((byte)0);
 
         // tnke
         buffer.putShort(tnke);
@@ -181,7 +183,7 @@ public class KeyEventsBlock {
         
 
         byte[] result = new byte[buffer.position()];
-        buffer.flip();
+        ((java.nio.Buffer) buffer).flip();
         buffer.get(result);
         return result;
     }
